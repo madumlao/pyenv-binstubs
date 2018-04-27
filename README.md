@@ -1,7 +1,7 @@
-# pyenv-binstubs: A Bundler binstubs Plugin for pyenv
+# pyenv-binstubs: A Pipenv Plugin for pyenv
 
 This plugin makes [pyenv](http://github.com/pyenv/pyenv/) transparently
-aware of project-specific binstubs created by [pipenv](https://pypi.python.org/pypi/pipenv).
+aware of project-specific venv binaries created by [pipenv](https://pypi.python.org/pypi/pipenv).
 
 This means you don't have to type `pipenv run ${command}` ever again!
 
@@ -26,17 +26,17 @@ Simply type the name of the command you want to run! Thats all folks! Eg:
     $ pip --version
 
 This plugin searches from the current directory up towards root for a directory containing a Pipfile.
-If such a directory is found, then the plugin checks for the desired command in the plugin's virtualenv (effectively running 'pipenv run').
+If such a directory is found, then the plugin checks for the desired command in directory's virtualenv (effectively running 'pipenv run'), then in its python version.
 
-To confirm that the bundler binstub is being used, run the command:
+To confirm that the pipenv binary is being used, run the command:
 
     $ pyenv which COMMAND
 
 To show which package pip will use, run the command:
 
-    $ bundle show PACKAGE
+    $ pip show PACKAGE
 
-You can disable the searching for binstubs by setting the environment variable DISABLE\_BINSTUBS to a non empty string:
+You can disable the searching for pipenv binaries by setting the environment variable DISABLE\_BINSTUBS to a non empty string:
 
     $ DISABLE_BINSTUBS=1 pyenv which command
 
@@ -46,7 +46,7 @@ You can list the bundles (project directories) and their associated virtualenv d
 
 ## License
 
-Copyright (c) 2017 Mark Dumlao Ian - Released under the same terms as [rbenv's MIT-License](https://github.com/rbenv/rbenv#license)
+Copyright (c) 2018 Mark Dumlao - Released under the same terms as [rbenv's MIT-License](https://github.com/rbenv/rbenv#license)
 
 ## Contributors
 
