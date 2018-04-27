@@ -19,10 +19,20 @@ check_for_binstubs()
 	bundle_line="$(egrep "^$root:" $bundles)"
 	bundle_root="$(echo $bundle_line | cut -f 1 -d :)"
 	pipenv_root="$(echo $bundle_line | cut -f 2 -d :)"
-	PYENV_COMMAND_PATH="$pipenv_root/bin/$PYENV_COMMAND"
-	if ! [ -x "$PYENV_COMMAND_PATH" ]; then
-	  PYENV_COMMAND_PATH="$PYENV_ROOT/versions/$version_name/bin/$PYENV_COMMAND"
+	potential_command="$pipenv_root/bin/$PYENV_COMMAND"
+	if ! [ -x "$potential_command" ]; then
+	  version_name="$(pyenv version-name)"
+	  if [ "$version_name" = "system" ]; then
+	    potential_command="$(get_system_command $PYENV_COMMAND)"
+	  else
+	    potential_command="$PYENV_ROOT/versions/$version_name/bin/$PYENV_COMMAND"
+	  fi
 	fi
+
+	if [ -x "$potential_command" ]; then
+	  PYENV_COMMAND_PATH="$potential_command"
+	fi
+
 	break
       fi
     fi
@@ -30,13 +40,14 @@ check_for_binstubs()
   done
 }
 
-version_name="$(pyenv version-name)"
-if [ "$version_name" = "system" ]; then
-  echo "TODO: support system python"
-  exit
-else
-  PIPENV_COMMAND="$PYENV_ROOT/versions/$version_name/bin/pipenv"
-fi
-if [ -z "$DISABLE_BINSTUBS" ] && [ -x "$PIPENV_COMMAND" ]; then
-  check_for_binstubs
+if [ -z "$DISABLE_BINSTUBS" ]; then
+  user_command="$(get_userbase)/bin/$PYENV_COMMAND"
+  if [ -x "$user_command" ]; then
+    PYENV_COMMAND_PATH="$user_command"
+  fi
+
+  PIPENV_COMMAND="$(get_pipenv)"
+  if [ -x "$PIPENV_COMMAND" ]; then
+    check_for_binstubs
+  fi
 fi

@@ -39,6 +39,17 @@ register_bundles ()
   fi
 }
 
+register_user_binstubs()
+{
+  potential_path="$(get_userbase)/bin"
+  for shim in $potential_path/*; do
+    # potential_path is executable AND a python script
+    if [ -x "$shim" ] && head -n1 "$shim" | grep -q '^#.*python'; then
+      register_shim "${shim##*/}"
+    fi
+  done
+}
+
 add_to_bundles ()
 {
   local root
@@ -76,15 +87,10 @@ add_to_bundles ()
   mv -f $new_bundles ${PYENV_ROOT}/bundles
 }
 
-version_name="$(pyenv version-name)"
-if [ "$version_name" = "system" ]; then
-  echo "TODO: support system python"
-  exit
-else
-  PIPENV_COMMAND="$PYENV_ROOT/versions/$version_name/bin/pipenv"
-fi
+PIPENV_COMMAND="$(get_pipenv)"
 if [ -z "$DISABLE_BINSTUBS" ] && [ -x "$PIPENV_COMMAND" ]; then
   add_to_bundles
   register_bundles
+  register_user_binstubs
 fi
 
