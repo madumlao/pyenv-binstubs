@@ -9,7 +9,7 @@ This means you don't have to type `pipenv run ${command}` ever again!
 
 To install pyenv-binstubs, clone this repository into your ~/.pyenv/plugins directory.
 
-    $ git clone https://github.com/ianheggie/pyenv-binstubs.git "$(pyenv root)/plugins/pyenv-binstubs"
+    $ git clone https://github.com/madumlao/pyenv-binstubs.git "$(pyenv root)/plugins/pyenv-binstubs"
 
 Then for each application directory run the following just once:
 
