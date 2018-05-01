@@ -30,7 +30,7 @@ check_for_binstubs()
 	fi
 
 	if [ -x "$potential_command" ]; then
-	  PYENV_COMMAND_PATH="$potential_command"
+	  echo $potential_command
 	fi
 
 	break
@@ -41,13 +41,17 @@ check_for_binstubs()
 }
 
 if [ -z "$DISABLE_BINSTUBS" ]; then
-  user_command="$(get_userbase)/bin/$PYENV_COMMAND"
-  if [ -x "$user_command" ]; then
-    PYENV_COMMAND_PATH="$user_command"
+  PIPENV_COMMAND="$(get_pipenv)"
+
+  if [ -x "$PIPENV_COMMAND" ]; then
+    user_command="$(check_for_binstubs)"
   fi
 
-  PIPENV_COMMAND="$(get_pipenv)"
-  if [ -x "$PIPENV_COMMAND" ]; then
-    check_for_binstubs
+  if ! [ -x "$user_command" ]; then
+    user_command="$(get_userbase)/bin/$PYENV_COMMAND"
+  fi
+
+  if [ -x "$user_command" ]; then
+    PYENV_COMMAND_PATH="$user_command"
   fi
 fi
