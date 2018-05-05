@@ -11,7 +11,7 @@ register_binstubs()
   fi
   while [ -n "$root" ]; do
     if [ -f "$root/Pipfile" ]; then
-      potential_path="$(cd $root; pipenv --venv 2>/dev/null)"
+      potential_path="$(cd $root; $PIPENV_COMMAND --venv 2>/dev/null)"
       if [ -d "$potential_path" ]; then
         for shim in "$potential_path"/bin/*; do
           if [ -x "$shim" ]; then
@@ -86,7 +86,7 @@ add_to_bundles ()
         new_bundle=false
       fi
       if [ -f "$bundle_root/Pipfile" ]; then
-        pipenv_root="$(cd $bundle_root; pipenv --venv 2>/dev/null)"
+        pipenv_root="$(cd $bundle_root; $PIPENV_COMMAND --venv 2>/dev/null)"
         echo "$bundle_root:$pipenv_root" >> $new_bundles
       fi
     done
