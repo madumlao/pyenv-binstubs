@@ -11,6 +11,12 @@ To install pyenv-binstubs, clone this repository into your ~/.pyenv/plugins dire
 
     $ git clone https://github.com/madumlao/pyenv-binstubs.git "$(pyenv root)/plugins/pyenv-binstubs"
 
+There is a known issue with pyenv-binstubs - if you have already installed pipenv using pyenv before, you may need to reinstall pipenv / created virtualenvs upon installing pyenv-binstubs. If you haven't used pipenv before installing pyenv-binstubs, this is not an issue.
+
+    $ rm -Rvf ~/.local/share/virtualenvs
+    $ pip uninstall pipenv
+    $ pip install pipenv
+
 Then for each application directory run the following just once:
 
     $ pipenv install [other stuff]
