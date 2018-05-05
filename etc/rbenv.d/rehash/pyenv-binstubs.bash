@@ -59,6 +59,17 @@ add_to_bundles ()
     root="$PWD"
   fi
 
+  # look for the deepest parent that has a Pipfile
+  until [ -f "$root/Pipfile" ]; do
+    if [ -z "$root" ]; then break; fi
+    root="${root%/*}"
+  done
+  # also check for Pipfile in /
+  if ! [ -f "$root/Pipfile" ]; then root="/"; fi
+
+  # no pipfile found, ignore
+  if ! [ -f "$root/Pipfile" ]; then return; fi
+
   # update the list of bundles to remove any stale ones
   local new_bundle
   new_bundle=true
