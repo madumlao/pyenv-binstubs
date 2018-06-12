@@ -44,7 +44,7 @@ register_user_binstubs()
   potential_path="$(get_userbase)/bin"
   for shim in $potential_path/*; do
     # potential_path is executable AND a python script
-    if [ -x "$shim" ] && head -n1 "$shim" | grep -q '^#.*python'; then
+    if [ ! -d "$shim" ] && [ -x "$shim" ] && head -n1 "$shim" | grep -q '^#.*python'; then
       register_shim "${shim##*/}"
     fi
   done
