@@ -12,7 +12,7 @@ remove_from_path() {
 
 get_system_python()
 {
-  get_system_command python
+  [ "$(get_system_command python)" ] && get_system_command python || get_system_command python3
 }
 
 get_system_pipenv()
